@@ -31,8 +31,29 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Modern dashboard with multi-theme support",
+  title: {
+    default: "EducAItors",
+    template: "%s | EducAItors",
+  },
+  description: "AI-powered educator dashboard for assignment evaluation, grading, and calibration.",
+  metadataBase: new URL("https://educ-a-itors.vercel.app"),
+  openGraph: {
+    title: "EducAItors",
+    description: "AI-powered educator dashboard for assignment evaluation, grading, and calibration.",
+    url: "https://educ-a-itors.vercel.app",
+    siteName: "EducAItors",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EducAItors",
+    description: "AI-powered educator dashboard for assignment evaluation, grading, and calibration.",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

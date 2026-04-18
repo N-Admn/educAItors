@@ -44,5 +44,5 @@ yarn-error.log*
 next-env.d.ts
 *.tsbuildinfo
 
-# dashboard folder (no longer used)
-dashboard/
+# dashboard subfolder (no longer used — moved to repo root)
+/dashboard/
