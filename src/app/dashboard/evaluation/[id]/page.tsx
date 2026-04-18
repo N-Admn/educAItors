@@ -108,7 +108,6 @@ export default function GradingDesk({ params }: { params: Promise<{ id: string }
   const [expandedRubricId, setExpandedRubricId] = useState<number>(1)
   const [overrideReasoning, setOverrideReasoning] = useState<Record<number, string>>({})
   const [recordingId, setRecordingId] = useState<number | null>(null)
-  const [rephrasingId, setRephrasingId] = useState<number | null>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null)
   const [revisionEvents, setRevisionEvents] = useState<RevisionEvent[]>([])
@@ -413,25 +412,6 @@ export default function GradingDesk({ params }: { params: Promise<{ id: string }
     recognitionRef.current = recognition
     recognition.start()
     setRecordingId(criterionId)
-  }
-
-  const handleRephrase = async (criterionId: number) => {
-    const text = criterionState[criterionId]?.feedback
-    if (!text?.trim()) return
-    setRephrasingId(criterionId)
-    try {
-      const res = await fetch("/api/rephrase", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text })
-      })
-      const data = await res.json()
-      if (data.rephrased) {
-        setCriterionState(prev => ({ ...prev, [criterionId]: { ...prev[criterionId], feedback: data.rephrased } }))
-      }
-    } finally {
-      setRephrasingId(null)
-    }
   }
 
   // Mock data for 4 pages
@@ -1230,19 +1210,6 @@ export default function GradingDesk({ params }: { params: Promise<{ id: string }
                                       </span>
                                     ) : (
                                       <><div className="h-1.5 w-1.5 rounded-full bg-red-500 mr-2" /> Record</>
-                                    )}
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleRephrase(point.id)}
-                                    disabled={rephrasingId === point.id || !criterionState[point.id]?.feedback?.trim()}
-                                    className="h-7 text-[9px] font-black uppercase tracking-widest rounded-md text-primary bg-primary/5 hover:bg-primary/10 border-none disabled:opacity-40"
-                                  >
-                                    {rephrasingId === point.id ? (
-                                      <><span className="mr-1.5 h-3 w-3 border border-primary border-t-transparent rounded-full animate-spin inline-block" /> Rephrasing…</>
-                                    ) : (
-                                      <><Sparkles className="h-3 w-3 mr-1.5" /> Rephrase</>
                                     )}
                                   </Button>
                               </div>
